@@ -1,8 +1,6 @@
 package com.site.springprojeto.controller;
 
 import com.site.springprojeto.models.entity.Desenvolvedor;
-import com.site.springprojeto.models.repository.DesenvolvedorRepository;
-import com.site.springprojeto.models.repository.JogoRepository;
 import com.site.springprojeto.service.DesenvolvedorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,54 +16,60 @@ public class DesenvolvedorController {
 
     private final DesenvolvedorService desenvolvedorService;
 
+    @Autowired
     public DesenvolvedorController(DesenvolvedorService desenvolvedorService) {
         this.desenvolvedorService = desenvolvedorService;
     }
 
-    @GetMapping()
-    public ResponseEntity findAll() {
-        return ResponseEntity.ok(desenvolvedorService.findAll());
+    @GetMapping
+    public ResponseEntity<List<Desenvolvedor>> findAll() {
+        List<Desenvolvedor> desenvolvedores = desenvolvedorService.findAll();
+        return ResponseEntity.ok(desenvolvedores);
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity findById(@PathVariable("id") Long id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<Desenvolvedor> findById(@PathVariable("id") Long id) {
         try {
-            return ResponseEntity.ok(desenvolvedorService.findById(id));
+            Desenvolvedor desenvolvedor = desenvolvedorService.findById(id);
+            return ResponseEntity.ok(desenvolvedor);
         } catch (Exception e) {
-            return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    @PostMapping()
-    public ResponseEntity save(@RequestBody Desenvolvedor desenvolvedor) {
+    @PostMapping
+    public ResponseEntity<Desenvolvedor> save(@Valid @RequestBody Desenvolvedor desenvolvedor) {
         try {
-            return ResponseEntity.ok(desenvolvedorService.save(desenvolvedor));
+            Desenvolvedor savedDesenvolvedor = desenvolvedorService.save(desenvolvedor);
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedDesenvolvedor);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(null);
         }
     }
 
-    @PutMapping()
-    public ResponseEntity edit(@RequestBody Desenvolvedor desenvolvedor) {
+    @PutMapping
+    public ResponseEntity<Desenvolvedor> edit(@Valid @RequestBody Desenvolvedor desenvolvedor) {
         try {
-            return ResponseEntity.ok(desenvolvedorService.save(desenvolvedor));
+            Desenvolvedor updatedDesenvolvedor = desenvolvedorService.save(desenvolvedor);
+            return ResponseEntity.ok(updatedDesenvolvedor);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(null);
         }
     }
 
-    @DeleteMapping("{id}")
-    public ResponseEntity delete(@PathVariable("id") Long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
         try {
-            return ResponseEntity.ok(desenvolvedorService.delete(id));
+            desenvolvedorService.delete(id);
+            return ResponseEntity.noContent().build();
         } catch (Exception e) {
-            return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @GetMapping("/total")
-    public ResponseEntity getTotal() {
-        return ResponseEntity.ok(desenvolvedorService.count());
+    public ResponseEntity<Long> getTotal() {
+        Long total = desenvolvedorService.count();
+        return ResponseEntity.ok(total);
     }
-
 }

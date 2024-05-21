@@ -3,7 +3,7 @@ package com.site.springprojeto.models.entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.*;
-import org.springframework.format.annotation.DateTimeFormat;
+
 
 import java.util.Date;
 @Entity
@@ -27,12 +27,18 @@ public class Jogo {
     private String classificacao;
     private String genero;
 
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
+
     private Date dataLancamento;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "desenvolvedor_id", nullable = false)
-    private Desenvolvedor desenvolvedor;
+    public Desenvolvedor getDesenvolvedor() {
+        return desenvolvedor;
+    }
+
+    public void setDesenvolvedor(Desenvolvedor desenvolvedor) {
+        this.desenvolvedor = desenvolvedor;
+    }
+
+
 
     public String getNome() {
         return nome;
@@ -105,4 +111,8 @@ public class Jogo {
     public void setId(long id) {
         this.id = id;
     }
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "desenvolvedor_id", nullable = false)
+    private Desenvolvedor desenvolvedor;
 }

@@ -1,7 +1,7 @@
 package com.site.springprojeto.models.entity;
 
 import jakarta.persistence.*;
-import org.springframework.format.annotation.DateTimeFormat;
+
 
 import java.util.Date;
 import java.util.HashSet;
@@ -22,7 +22,7 @@ public class Desenvolvedor {
 
     private Integer nota;
 
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
+
     private Date dataCriacao;
 
     private String presidente;
