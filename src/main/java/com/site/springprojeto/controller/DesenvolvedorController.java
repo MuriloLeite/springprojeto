@@ -28,42 +28,42 @@ public class DesenvolvedorController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Desenvolvedor> findById(@PathVariable("id") Long id) {
+    public ResponseEntity<?> findById(@PathVariable("id") Long id) {
         try {
             Desenvolvedor desenvolvedor = desenvolvedorService.findById(id);
             return ResponseEntity.ok(desenvolvedor);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
     @PostMapping
-    public ResponseEntity<Desenvolvedor> save(@Valid @RequestBody Desenvolvedor desenvolvedor) {
+    public ResponseEntity<?> save(@Valid @RequestBody Desenvolvedor desenvolvedor) {
         try {
             Desenvolvedor savedDesenvolvedor = desenvolvedorService.save(desenvolvedor);
             return ResponseEntity.status(HttpStatus.CREATED).body(savedDesenvolvedor);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
     @PutMapping
-    public ResponseEntity<Desenvolvedor> edit(@Valid @RequestBody Desenvolvedor desenvolvedor) {
+    public ResponseEntity<?> edit(@Valid @RequestBody Desenvolvedor desenvolvedor) {
         try {
             Desenvolvedor updatedDesenvolvedor = desenvolvedorService.save(desenvolvedor);
             return ResponseEntity.ok(updatedDesenvolvedor);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
         try {
             desenvolvedorService.delete(id);
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 

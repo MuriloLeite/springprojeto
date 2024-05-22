@@ -33,28 +33,28 @@ public class JogoController {
             Jogo jogo = jogoService.findById(id);
             return ResponseEntity.ok(jogo);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 
     @PostMapping
-    public ResponseEntity<Jogo> save(@Valid @RequestBody Jogo jogo) {
+    public ResponseEntity<?> save(@Valid @RequestBody Jogo jogo) {
         try {
             Jogo savedJogo = jogoService.save(jogo);
             return ResponseEntity.status(HttpStatus.CREATED).body(savedJogo);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
     @PutMapping
-    public ResponseEntity<Jogo> edit(@Valid @RequestBody Jogo jogo) {
+    public ResponseEntity<?> edit(@Valid @RequestBody Jogo jogo) {
         try {
             // O ID já está no objeto 'jogo' passado no corpo da requisição
             Jogo updatedJogo = jogoService.save(jogo);
             return ResponseEntity.ok(updatedJogo);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
@@ -64,7 +64,7 @@ public class JogoController {
             jogoService.delete(id);
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 
