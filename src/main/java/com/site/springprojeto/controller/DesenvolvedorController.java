@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/desenvolvedores")
+@CrossOrigin(origins = "http://127.0.0.1:5500")  // Permitir requisições do frontend
 public class DesenvolvedorController {
 
     private final DesenvolvedorService desenvolvedorService;
