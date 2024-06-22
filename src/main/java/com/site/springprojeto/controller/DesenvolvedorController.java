@@ -48,10 +48,24 @@ public class DesenvolvedorController {
         }
     }
 
-    @PutMapping
-    public ResponseEntity<?> edit(@Valid @RequestBody Desenvolvedor desenvolvedor) {
+    @PutMapping("/{id}")
+    public ResponseEntity<?> edit(@PathVariable("id") Long id, @Valid @RequestBody Desenvolvedor desenvolvedor) {
         try {
-            Desenvolvedor updatedDesenvolvedor = desenvolvedorService.save(desenvolvedor);
+            Desenvolvedor existingDesenvolvedor = desenvolvedorService.findById(id);
+            if (existingDesenvolvedor == null) {
+                return ResponseEntity.notFound().build();
+            }
+            // Atualiza os campos do desenvolvedor existente com os novos dados
+            existingDesenvolvedor.setNome(desenvolvedor.getNome());
+            existingDesenvolvedor.setCNPJ(desenvolvedor.getCNPJ());
+            existingDesenvolvedor.setNota(desenvolvedor.getNota());
+            existingDesenvolvedor.setDataCriacao(desenvolvedor.getDataCriacao());
+            existingDesenvolvedor.setPresidente(desenvolvedor.getPresidente());
+            existingDesenvolvedor.setNumeroColaboradores(desenvolvedor.getNumeroColaboradores());
+            existingDesenvolvedor.setWebsite(desenvolvedor.getWebsite());
+
+            // Salva o desenvolvedor atualizado
+            Desenvolvedor updatedDesenvolvedor = desenvolvedorService.save(existingDesenvolvedor);
             return ResponseEntity.ok(updatedDesenvolvedor);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

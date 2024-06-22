@@ -32,9 +32,12 @@ public class JogoController {
     public ResponseEntity<Jogo> findById(@PathVariable("id") Long id) {
         try {
             Jogo jogo = jogoService.findById(id);
+            if (jogo == null) {
+                return ResponseEntity.notFound().build();
+            }
             return ResponseEntity.ok(jogo);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
@@ -48,10 +51,14 @@ public class JogoController {
         }
     }
 
-    @PutMapping
-    public ResponseEntity<?> edit(@Valid @RequestBody Jogo jogo) {
+    @PutMapping("/{id}")
+    public ResponseEntity<?> edit(@PathVariable("id") Long id, @Valid @RequestBody Jogo jogo) {
         try {
-            // O ID já está no objeto 'jogo' passado no corpo da requisição
+            Jogo existingJogo = jogoService.findById(id);
+            if (existingJogo == null) {
+                return ResponseEntity.notFound().build();
+            }
+            jogo.setId(id); // Garante que o ID passado na URL seja respeitado
             Jogo updatedJogo = jogoService.save(jogo);
             return ResponseEntity.ok(updatedJogo);
         } catch (Exception e) {
