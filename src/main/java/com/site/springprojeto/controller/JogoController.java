@@ -76,6 +76,12 @@ public class JogoController {
         }
     }
 
+    @GetMapping("/desenvolvedor/{devId}")
+    public ResponseEntity<List<Jogo>> findByDesenvolvedorId(@PathVariable("devId") Long devId) {
+        List<Jogo> jogos = jogoService.findByDesenvolvedorId(devId);
+        return ResponseEntity.ok(jogos);
+    }
+
     @GetMapping("/total")
     public ResponseEntity<Long> getTotal() {
         Long total = jogoService.count();
