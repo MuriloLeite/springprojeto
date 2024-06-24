@@ -55,7 +55,7 @@ public class DesenvolvedorController {
             if (existingDesenvolvedor == null) {
                 return ResponseEntity.notFound().build();
             }
-            // Atualiza os campos do desenvolvedor existente com os novos dados
+
             existingDesenvolvedor.setNome(desenvolvedor.getNome());
             existingDesenvolvedor.setCNPJ(desenvolvedor.getCNPJ());
             existingDesenvolvedor.setNota(desenvolvedor.getNota());
@@ -64,7 +64,7 @@ public class DesenvolvedorController {
             existingDesenvolvedor.setNumeroColaboradores(desenvolvedor.getNumeroColaboradores());
             existingDesenvolvedor.setWebsite(desenvolvedor.getWebsite());
 
-            // Salva o desenvolvedor atualizado
+
             Desenvolvedor updatedDesenvolvedor = desenvolvedorService.save(existingDesenvolvedor);
             return ResponseEntity.ok(updatedDesenvolvedor);
         } catch (Exception e) {

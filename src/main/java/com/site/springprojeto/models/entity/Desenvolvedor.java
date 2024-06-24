@@ -29,7 +29,6 @@ public class Desenvolvedor {
     private Integer numeroColaboradores;
     private String website;
 
-    // Relacionamento um para muitos com Jogo
     @OneToMany(mappedBy = "desenvolvedor", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Jogo> jogos = new HashSet<>();
 
